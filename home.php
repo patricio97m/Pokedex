@@ -21,49 +21,42 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                    $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
-                    $sql = "select P.nombre as nombrePokemon, P.codigo as numeroPokemon, T.nombre as Tipo
-                            from Pokemon P join Tipo_Pokemon TP on P.codigo = TP.codigoPokemon
-                                    join Tipo T on T.codigo = TP.codigoTipo
-                            order by numeroPokemon, Tipo";
-                    $consulta = mysqli_query($conexion, $sql);
-                    $nfilas = mysqli_num_rows($consulta);
-
-                    $listaDePokemones = array();
-                    while($fila = mysqli_fetch_assoc($consulta)){
-                        $numeroPokemon = $fila["numeroPokemon"];
-                        if(isset($listaDePokemones[$numeroPokemon - 1])){
-                            $listaDePokemones[$numeroPokemon - 1]["tipos"][] = $fila["Tipo"];
-                        }
-                        else{
-                            $pokemon = array();
-                            $pokemon["nombre"] = $fila["nombrePokemon"];
-                            $pokemon["tipos"][] = $fila["Tipo"];
-                            $pokemon["numero"] = $fila["numeroPokemon"];
-                            $listaDePokemones[] = $pokemon;
-                        }
-                    }
-                    foreach ($listaDePokemones as $pokemon) {
-                        $nombrePokemon = $pokemon["nombre"];
-                        $numeroPokemon = $pokemon["numero"];
-                        $imagenPokemon = "./img/pokemon/" . $nombrePokemon . ".png";
-                        echo "<tr>
-                                <th scope='row'><img src=$imagenPokemon alt='poke1' class='imgpoke'></th>
-                            <td> "; 
-                            
-                            foreach ($pokemon["tipos"] as $tipo) {
-                                $imagenTipo = "./img/tipos/Tipo_" . $tipo . ".webp";
-                                echo "<img src=$imagenTipo alt='tipo' class='imgtipo'>";
-                            } 
-
-                        echo " </td>
-                            <td>$numeroPokemon</td>
-                            <td>$nombrePokemon</td>
-                        </tr>";
-                    }
-                    mysqli_close($conexion);
-                ?>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/bulbasaur.png" alt="poke1" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_planta.webp" alt="tipo" class="imgtipo"><img src="./img/tipos/Tipo_veneno.webp" alt="tipo"></td>
+                    <td>#1</td>
+                    <td>Bulbasaur</td>
+                </tr>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/ivysaur.png" alt="poke2" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_planta.webp" alt="tipo" class="imgtipo"><img src="./img/tipos/Tipo_veneno.webp" alt="tipo"></td>
+                    <td>#2</td>
+                    <td>Ivysaur</td>
+                </tr>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/venusaur.png" alt="poke3" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_planta.webp" alt="tipo" class="imgtipo"><img src="./img/tipos/Tipo_veneno.webp" alt="tipo"></td>
+                    <td>#3</td>
+                    <td>Venusaur</td>
+                </tr>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/charmander.png" alt="poke4" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_fuego.webp" alt="tipo" class="imgtipo"></td>
+                    <td>#4</td>
+                    <td>Charmander</td>
+                </tr>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/charmeleon.png" alt="poke5" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_fuego.webp" alt="tipo" class="imgtipo"></td>
+                    <td>#5</td>
+                    <td>Charmeleon</td>
+                </tr>
+                <tr>
+                    <th scope="row"><img src="./img/pokemon/charizard.png" alt="poke6" class="imgpoke"></th>
+                    <td><img src="./img/tipos/Tipo_fuego.webp" alt="tipo" class="imgtipo"><img src="./img/tipos/Tipo_volador.webp" alt="tipo" class="imgtipo"></td>
+                    <td>#5</td>
+                    <td>Charizard</td>
+                </tr>
             </tbody>
         </table>
     </main>
