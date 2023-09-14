@@ -12,7 +12,7 @@ if($_POST){
     } else {
         session_start();
         $_SESSION['usuario'] = $usuarioIngresado;
-        header('Location: nuevo-pokemon.php');
+        header('Location: home.php');
     }
     mysqli_close($conexion);
 } else{

@@ -1,6 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['usuario'])){
+if (isset($_SESSION['usuario'])) {
     header('Location: home.php');
     exit();
 }
@@ -15,7 +14,7 @@ if(!isset($_SESSION['usuario'])){
     <title>Pokédex</title>
   </head>
   <body>
-    <?php include("includes/headerAdmin.php"); ?>
+    <?php include("includes/header.php"); ?>
 
     <main class="container">
         <h2>Subir un nuevo Pokémon</h2>

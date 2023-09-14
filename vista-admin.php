@@ -8,7 +8,7 @@
     <title>Pokédex</title>
   </head>
   <body>
-    <?php include("includes/headerAdmin.php"); ?>
+    <?php include("includes/header.php"); ?>
 
     <main>
         <table class="table table-light table-hover table-bordered mt-3">

@@ -13,6 +13,6 @@
         </ul>
     </div>
     <div>
-        <a href="https://github.com/" target="_blank">Repositorio de Github</a>
+        <a href="https://github.com/https://github.com/patricio97m/Pokedex" target="_blank">Repositorio de Github</a>
     </div>
 </footer>
