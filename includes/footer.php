@@ -1,6 +1,6 @@
 <footer class="d-flex justify-content-between align-items-center py-3 my-4 border-top p-3">
     <div>
-        Trabajo práctico pokédex - 2023
+        Trabajo Práctico Pokédex - 2023
     </div>
     <div>
         Integrantes:

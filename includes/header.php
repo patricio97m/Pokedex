@@ -38,10 +38,9 @@
     </nav>
 
     <div>
-        <form class="form-inline my-2 my-lg-0 d-flex">
-            <input class="form-control mx-1" type="text" name="busqueda"
-                placeholder="Ingrese nombre, tipo o número de pokémon" />
-            <button method="post" action="buscar.php" class="btn btn-outline-success ml-2 my-2 my-sm-0" type="submit">
+        <form method="post" action="" class="form-inline my-2 my-lg-0 d-flex">
+            <input class="form-control mx-1" type="text" name="busqueda" placeholder="Ingrese nombre, tipo o número de pokémon">
+            <button class="btn btn-outline-success ml-2 my-2 my-sm-0" type="submit" name="buscarSubmit" >
                 Buscar
             </button>
         </form>

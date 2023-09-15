@@ -1,31 +1,22 @@
 <?php
 session_start();
-$conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
-$sql = "select P.nombre as nombrePokemon, P.descripcion, P.codigo as numeroPokemon, P.numeroPokedex, T.nombre as Tipo
-                            from Pokemon P join Tipo_Pokemon TP on P.codigo = TP.codigoPokemon
-                                    join Tipo T on T.codigo = TP.codigoTipo
-                            order by numeroPokemon, Tipo";
-$consulta = mysqli_query($conexion, $sql);
-$nfilas = mysqli_num_rows($consulta);
-
-$listaDePokemones = array();
-while ($fila = mysqli_fetch_assoc($consulta)) {
-    $numeroPokemon = $fila["numeroPokemon"];
-    if (isset($listaDePokemones[$numeroPokemon - 1])) {
-        $listaDePokemones[$numeroPokemon - 1]["tipos"][] = $fila["Tipo"];
-        $_SESSION['lista_de_pokemones'] = $listaDePokemones;
-    } else {
-        $pokemon = array();
-        $pokemon["nombre"] = $fila["nombrePokemon"];
-        $pokemon["tipos"][] = $fila["Tipo"];
-        $pokemon["numero"] = $fila["numeroPokemon"];
-        $pokemon["descripcion"] = $fila["descripcion"];
-        $pokemon["numeroPokedex"] = $fila["numeroPokedex"];
-        $listaDePokemones[] = $pokemon;
-        $_SESSION['lista_de_pokemones'] = $listaDePokemones;
-    }
+require_once("includes/funciones.php");
+$pokedex = new pokedex();
+if(isset($_POST["buscarSubmit"])){
+    $busqueda = $_POST["busqueda"];
+    $_SESSION["listaDePokemones"] = $pokedex->buscarPokemones($busqueda);
+    
+    header("Location: home.php");
+    exit;
 }
-
+else{
+    if(!isset($_SESSION["listaDePokemones"])){
+        $_SESSION["listaDePokemones"] = $pokedex->cargarPokemones();
+    }
+    
+}
+$admin = isset($_SESSION['usuario']);
+$listaDePokemones = $_SESSION["listaDePokemones"];
 ?>
 
 <!DOCTYPE html>
@@ -40,8 +31,15 @@ while ($fila = mysqli_fetch_assoc($consulta)) {
 </head>
 <body>
 <?php include("includes/header.php"); ?>
-
 <main>
+    <?php
+        if(isset($_SESSION["errorBusqueda"])){
+            $errorBusqueda = $_SESSION["errorBusqueda"];
+            echo "<h2 class='alert alert-danger' role='alert'>$errorBusqueda</h2>";
+            unset($_SESSION["errorBusqueda"]);
+        }
+    ?>
+
     <table class="table table-light table-hover table-bordered mt-3">
         <thead>
         <tr>
@@ -49,52 +47,21 @@ while ($fila = mysqli_fetch_assoc($consulta)) {
             <th scope="col">Tipo</th>
             <th scope="col">Número pokedex</th>
             <th scope="col">Nombre</th>
-            <?php if (isset($_SESSION['usuario'])) {
+            <?php if ($admin) {
                 echo "<th scope='col'>Acciones</th>";
             } ?>
         </tr>
         </thead>
         <tbody>
         <?php
-        foreach ($listaDePokemones as $pokemon) {
-            $nombrePokemon = $pokemon["nombre"];
-            $numeroPokemon = $pokemon["numero"];
-            $numeroPokedex = $pokemon["numeroPokedex"];
-            $imagenPokemon = "./img/pokemon/" . $nombrePokemon . ".png";
-
-            echo "<tr>
-                            <th scope='row'>
-                                <a href='detalles.php?numero_pokemon=$numeroPokemon'>
-                                    <img src=$imagenPokemon alt='poke1' class='imgpoke'>
-                                </a>
-                            </th>
-                            <td>";
-
-            foreach ($pokemon["tipos"] as $tipo) {
-                $imagenTipo = "./img/tipos/Tipo_" . $tipo . ".webp";
-                echo "<img src=$imagenTipo alt='tipo' class='imgtipo'>";
-            }
-
-            echo "</td>
-                        <td>#$numeroPokedex</td>
-                        <td>
-                            <a href='detalles.php?numero_pokemon=$numeroPokemon' class='text-decoration-none'>$nombrePokemon</a>
-                        </td>";
-
-            if (isset($_SESSION['usuario'])) {
-                echo "<td>
-                                <button method='post' action='nuevo-pokemon.php' class='btn btn-outline-primary ml-2 my-2 my-sm-0' type='submit'>Modificación</button> 
-                                <button method='post' action='baja.php' class='btn btn-outline-danger ml-2 my-2 my-sm-0' type='submit'>Baja</button>
-                              </td>";
-            }
-            echo "</tr>";
-        }
+            $pokedex->listarPokemones($admin, $listaDePokemones);
+            unset($_SESSION["listaDePokemones"]);
         ?>
         </tbody>
     </table>
-    <?php if (isset($_SESSION['usuario'])): ?>
+    <?php if ($admin): ?>
         <div class='d-grid gap-2'>
-            <a href='nuevo-pokemon.php' class='btn btn-outline-success'>Nuevo pokémon</a>
+            <a href='nuevo-pokemon.php' class='btn btn-outline-success'>Nuevo Pokémon</a>
         </div>
     <?php endif; ?>
 </main>
