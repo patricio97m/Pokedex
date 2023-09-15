@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <header class="bg-light p-3">
     <nav class="navbar navbar-light justify-content-between">
         <a class="navbar-brand" href="home.php"><img src="./img/Poké_Ball_icon.svg.png" alt="pokeball"class="pokeball" />Pokédex</a>

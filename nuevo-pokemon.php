@@ -1,5 +1,6 @@
 <?php
-if (isset($_SESSION['usuario'])) {
+session_start();
+if (!isset($_SESSION['usuario'])) {
     header('Location: home.php');
     exit();
 }
@@ -52,7 +53,10 @@ if (isset($_SESSION['usuario'])) {
             </div>
             <div class="form-group mb-3">
                 <label for="imagen">Imagen:</label>
-                <input type="file" class="form-control-file" id="imagen" name="imagen" accept="image/*" required>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="imagen" name="imagen" accept="image/*" required>
+                    <label class="custom-file-label" for="imagen">Seleccionar archivo</label>
+                </div>
             </div>
             <div class="form-group mb-3">
                 <label for="descripcion">Descripción:</label>
@@ -61,7 +65,6 @@ if (isset($_SESSION['usuario'])) {
             <button type="submit" class="btn btn-outline-success">Guardar pokémon</button>
         </form>
     </main>
-
     <?php include("includes/footer.php"); ?>
   </body>
 </html>
