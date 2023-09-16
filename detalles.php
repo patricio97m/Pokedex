@@ -10,7 +10,9 @@ foreach ($listaDePokemones as $pokemon) {
         $pokemonEncontrado = $pokemon;
         break;
     }
-} ?>
+}
+include ("includes/buscarPokemon.php");
+?>
 
 <!DOCTYPE html>
 <html lang="es">

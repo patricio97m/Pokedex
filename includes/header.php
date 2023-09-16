@@ -25,8 +25,8 @@
                 session_destroy();
             }
             ?>
-                <input class="form-control mx-2" type="text" placeholder="Usuario" name="usuario" />
-                <input class="form-control mx-2" type="password" placeholder="Contraseña" name="password" />
+                <input class="form-control mx-2" type="text" placeholder="Usuario" name="usuario" required/>
+                <input class="form-control mx-2" type="password" placeholder="Contraseña" name="password" required/>
                 <button class="btn btn-outline-success ml-2 my-2 my-sm-0" type="submit">
                     Ingresar
                 </button>
@@ -39,7 +39,7 @@
 
     <div>
         <form method="post" action="" class="form-inline my-2 my-lg-0 d-flex">
-            <input class="form-control mx-1" type="text" name="busqueda" placeholder="Ingrese nombre, tipo o número de pokémon">
+            <input class="form-control mx-1" type="text" name="busqueda" placeholder="Ingrese el nombre de un pokémon" required>
             <button class="btn btn-outline-success ml-2 my-2 my-sm-0" type="submit" name="buscarSubmit" >
                 Buscar
             </button>

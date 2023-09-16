@@ -4,6 +4,7 @@ if (!isset($_SESSION['usuario'])) {
     header('Location: home.php');
     exit();
 }
+include ("includes/buscarPokemon.php");
 ?>
 <!DOCTYPE html>
 <html lang="es">
