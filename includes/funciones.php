@@ -34,6 +34,7 @@ class pokedex
                 $pokemon["descripcion"] = $fila["descripcion"];
                 $pokemon["numeroPokedex"] = $fila["numeroPokedex"];
                 $listaDePokemones[] = $pokemon;
+                $_SESSION['datos_para_detalles'] = $listaDePokemones;
             }
         }
         return $listaDePokemones;

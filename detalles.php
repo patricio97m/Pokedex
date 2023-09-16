@@ -2,7 +2,7 @@
 session_start();
 if (isset($_GET['numero_pokemon'])) {
 $numeroPokemon = $_GET['numero_pokemon'];
-$listaDePokemones = $_SESSION['lista_de_pokemones'];
+$listaDePokemones = $_SESSION['datos_para_detalles'];
 
 $pokemonEncontrado = null;
 foreach ($listaDePokemones as $pokemon) {
