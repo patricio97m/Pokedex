@@ -8,7 +8,6 @@
             <li>Miranda Patricio</li>
             <li>Carrera Agustín</li>
             <li>Medina Mauricio</li>
-            <li>Emanuel Ibarrola</li>
         </ul>
     </div>
     <div>

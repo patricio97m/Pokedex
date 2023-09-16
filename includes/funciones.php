@@ -116,16 +116,22 @@ class pokedex
 
     public function bajaPokemon($codigoPokemon) {
         $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
-        $sql = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
-        $mensaje ="";
+
+        $sql_verificar = "SELECT codigo FROM pokemon WHERE codigo = $codigoPokemon";
+        $consulta_verificar = mysqli_query($conexion, $sql_verificar);
+
+        $sql = "DELETE FROM tipo_pokemon WHERE codigoPokemon = $codigoPokemon";
+        $mensaje = "";
         $consulta = mysqli_query($conexion, $sql);
-        $sql2 = "delete from pokemon where codigo = $codigoPokemon";
+        $sql2 = "DELETE FROM pokemon WHERE codigo = $codigoPokemon";
         $consulta2 = mysqli_query($conexion, $sql2);
-        if($consulta2){
-            $mensaje = "Pokemon ".$codigoPokemon." eliminado correctamente";
+
+        if ($consulta2 && mysqli_num_rows($consulta_verificar) !== 0) {
+            $mensaje = "Pokémon $codigoPokemon eliminado correctamente";
         } else {
-            $mensaje = false;
+            $mensaje = "El Pokémon con número $codigoPokemon no existe en la base de datos.";
         }
+
         return $mensaje;
     }
 }

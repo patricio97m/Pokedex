@@ -32,27 +32,32 @@ include ("includes/buscarPokemon.php");
             echo "<h2 class='alert alert-success' role='alert'>$success</h2>";
             unset($_SESSION["success"]);
         }
-    ?>
 
-    <table class="table table-light table-hover table-bordered mt-3">
-        <thead>
-        <tr>
-            <th scope="col">Foto</th>
-            <th scope="col">Tipo</th>
-            <th scope="col">Número pokedex</th>
-            <th scope="col">Nombre</th>
-            <?php if ($admin) {
-                echo "<th scope='col'>Acciones</th>";
-            } ?>
-        </tr>
-        </thead>
-        <tbody>
-        <?php
+    if (isset($_SESSION["listaDePokemones"]) && !empty($_SESSION["listaDePokemones"])) {
+        ?>
+        <table class="table table-light table-hover table-bordered mt-3">
+            <thead>
+            <tr>
+                <th scope="col">Foto</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Número pokedex</th>
+                <th scope="col">Nombre</th>
+                <?php if ($admin) {
+                    echo "<th scope='col'>Acciones</th>";
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
             $pokedex->listarPokemones($admin, $listaDePokemones);
             unset($_SESSION["listaDePokemones"]);
-        ?>
-        </tbody>
-    </table>
+            ?>
+            </tbody>
+        </table>
+    <?php } else {
+        echo "<h3>No existen Pokémon en la base de datos.</h3>";
+    }
+    ?>
     <?php if ($admin): ?>
         <div class='d-grid gap-2'>
             <a href='nuevo-pokemon.php' class='btn btn-outline-success'>Nuevo Pokémon</a>
