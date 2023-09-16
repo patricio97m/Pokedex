@@ -117,10 +117,11 @@ class pokedex
     public function bajaPokemon($codigoPokemon) {
         $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
         $sql = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
-        $mensaje ="";
         $consulta = mysqli_query($conexion, $sql);
         $sql2 = "delete from pokemon where codigo = $codigoPokemon";
         $consulta2 = mysqli_query($conexion, $sql2);
+
+        $mensaje ="";
         if($consulta2){
             $mensaje = "Pokemon ".$codigoPokemon." eliminado correctamente";
         } else {
@@ -128,5 +129,44 @@ class pokedex
         }
         return $mensaje;
     }
+
+    public function altaPokemon($nombre, $numero, $tipos, $descripcion){
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        
+        $sql = "INSERT INTO pokemon (nombre, numeroPokedex, descripcion) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "sis", $nombre, $numero, $descripcion);
+        
+        $mensaje = "";
+        
+        if (mysqli_stmt_execute($stmt)) {
+            $codigoPokemon = mysqli_insert_id($conexion);
+            
+            if (!isset($tipos)) {
+                $mensaje = "Ha ocurrido un error al insertar los tipos";
+                $this->bajaPokemon($codigoPokemon);
+            }
+            else{
+                foreach ($tipos as $tipo) {
+                    $sql2 = "INSERT INTO tipo_pokemon (codigoPokemon, codigoTipo) VALUES (?, ?)";
+                    $stmt2 = mysqli_prepare($conexion, $sql2);
+                    mysqli_stmt_bind_param($stmt2, "ii", $codigoPokemon, $tipo);
+                    
+                    if (!mysqli_stmt_execute($stmt2)){
+                        $mensaje = "Ha ocurrido un error al insertar los tipos";
+                        $this->bajaPokemon($codigoPokemon);
+                        break;
+                    }
+                }
+            }
+            
+        }else {
+            $mensaje = "Ha ocurrido un error al insertar el Pokémon";
+        }
+        
+        mysqli_close($conexion);
+        return $mensaje;
+    }
+    
 }
 ?>
