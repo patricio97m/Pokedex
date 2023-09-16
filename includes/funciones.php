@@ -108,7 +108,7 @@ class pokedex
 
             if ($admin) {
                 echo "<td>
-                        <button method='post' action='nuevo-pokemon.php' class='btn btn-outline-primary ml-2 my-2 my-sm-0' type='submit'>Modificación</button>
+                        <a href='modifica.php?numPokemon=$numeroPokemon' class='btn btn-outline-primary'>Modifica</a>
                         <a href='baja.php?numPokemon=$numeroPokemon' class='btn btn-outline-danger'>Baja</a>
                       </td>";
             }
@@ -127,6 +127,76 @@ class pokedex
         var_dump($consulta2);
         if($consulta2){
             $mensaje = "Pokemon ".$codigoPokemon." eliminado correctamente";
+        } else {
+            $mensaje = false;
+        }
+        return $mensaje;
+    }
+    public function cargarPokemon($codigo) {
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        $sql = "select P.nombre as nombrePokemon, P.descripcion, P.codigo as numeroPokemon, P.numeroPokedex, T.nombre as Tipo,T.codigo as Tipo_codigo
+                from Pokemon P join Tipo_Pokemon TP on P.codigo = TP.codigoPokemon
+                                join Tipo T on T.codigo = TP.codigoTipo
+                where P.codigo = $codigo
+                order by numeroPokemon, Tipo";
+        $consulta = mysqli_query($conexion, $sql);
+
+        $listaDePokemones = array();
+        while ($fila = mysqli_fetch_assoc($consulta)){
+            $coincidencia = false;
+            foreach ($listaDePokemones as $key => $pokemon) {
+                if ($pokemon["numero"] == $fila["numeroPokemon"]){
+                    $listaDePokemones[$key]["tipos"][] = $fila["Tipo_codigo"];
+                    $coincidencia = true;
+                }
+            }
+            $this->debug_to_console($coincidencia);
+            if(!$coincidencia){
+                $pokemon = array();
+                $pokemon["nombre"] = $fila["nombrePokemon"];
+                $pokemon["tipos"][] = $fila["Tipo_codigo"];
+                $pokemon["numero"] = $fila["numeroPokemon"];
+                $pokemon["descripcion"] = $fila["descripcion"];
+                $pokemon["numeroPokedex"] = $fila["numeroPokedex"];
+                $pokemon["codigoPokemon"] = $fila["numeroPokemon"];
+                $listaDePokemones[] = $pokemon;
+                $_SESSION['datos_para_detalles'] = $listaDePokemones;
+            }
+        }
+        return $listaDePokemones;
+    }
+    public function tiposPokemon() {
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        $sql = "select * from Tipo";
+        $consulta = mysqli_query($conexion, $sql);
+        $tiposPokemon = array();
+        foreach ($consulta as $tipos){
+            $tiposPokemon[] = array("codigo"=>$tipos['codigo'],"nombre"=>$tipos['nombre']);
+        }
+        return $tiposPokemon;
+    }
+    public function modificaPokemon($codigoPokemon, $nombre,$numero,$descripcion,$tipos) {
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        $sql = "update pokemon set 
+                    nombre ='$nombre',
+                    numeroPokedex=$numero,
+                    descripcion='$descripcion'
+                    where codigo=$codigoPokemon";
+        $consulta = mysqli_query($conexion, $sql);
+
+        $borraTipo = false;
+        $resultadoInsertaTipo=false;
+        if(!empty($tipos)){
+            $sqlTipo = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
+            $borraTipo = mysqli_query($conexion, $sqlTipo);
+            foreach ($tipos as $tipo){
+                $sqlInsertTipo = "insert into tipo_pokemon value($codigoPokemon,$tipo)";
+                $resultadoInsertaTipo = mysqli_query($conexion, $sqlInsertTipo);
+            }
+        }
+
+        if($consulta&&$resultadoInsertaTipo&&$borraTipo){
+            $mensaje = "Pokemon ".$codigoPokemon." modificado correctamente";
         } else {
             $mensaje = false;
         }
