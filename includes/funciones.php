@@ -25,7 +25,6 @@ class pokedex
                     $coincidencia = true;
                 }
             }
-            $this->debug_to_console($coincidencia);
             if(!$coincidencia){
                 $pokemon = array();
                 $pokemon["nombre"] = $fila["nombrePokemon"];
@@ -66,7 +65,6 @@ class pokedex
                     $coincidencia = true;
                 }
             }
-            $this->debug_to_console($coincidencia);
             if(!$coincidencia){
                 $pokemon = array();
                 $pokemon["nombre"] = $fila["nombrePokemon"];
@@ -123,8 +121,6 @@ class pokedex
         $consulta = mysqli_query($conexion, $sql);
         $sql2 = "delete from pokemon where codigo = $codigoPokemon";
         $consulta2 = mysqli_query($conexion, $sql2);
-        echo $sql;
-        var_dump($consulta2);
         if($consulta2){
             $mensaje = "Pokemon ".$codigoPokemon." eliminado correctamente";
         } else {
