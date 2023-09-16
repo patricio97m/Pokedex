@@ -66,6 +66,7 @@ include ("includes/buscarPokemon.php");
             <button type="submit" class="btn btn-outline-success">Guardar pokémon</button>
         </form>
     </main>
+    <script src="includes/verificar_tipos.js"></script>
     <?php include("includes/footer.php"); ?>
   </body>
 </html>
