@@ -22,6 +22,16 @@ include ("includes/buscarPokemon.php");
             echo "<h2 class='alert alert-danger' role='alert'>$errorBusqueda</h2>";
             unset($_SESSION["errorBusqueda"]);
         }
+        if(isset($_SESSION["error"])){
+            $error = $_SESSION["error"];
+            echo "<h2 class='alert alert-danger' role='alert'>$error</h2>";
+            unset($_SESSION["error"]);
+        }
+        if(isset($_SESSION["success"])){
+            $success = $_SESSION["success"];
+            echo "<h2 class='alert alert-success' role='alert'>$success</h2>";
+            unset($_SESSION["success"]);
+        }
     ?>
 
     <table class="table table-light table-hover table-bordered mt-3">
