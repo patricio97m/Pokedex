@@ -108,12 +108,29 @@ class pokedex
 
             if ($admin) {
                 echo "<td>
-                        <button method='post' action='nuevo-pokemon.php' class='btn btn-outline-primary ml-2 my-2 my-sm-0' type='submit'>Modificación</button> 
-                        <button method='post' action='baja.php' class='btn btn-outline-danger ml-2 my-2 my-sm-0' type='submit'>Baja</button>
+                        <button method='post' action='nuevo-pokemon.php' class='btn btn-outline-primary ml-2 my-2 my-sm-0' type='submit'>Modificación</button>
+                        <a href='baja.php?numPokemon=$numeroPokemon' class='btn btn-outline-danger'>Baja</a>
                       </td>";
             }
             echo "</tr>";
         }
+    }
+
+    public function bajaPokemon($codigoPokemon) {
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        $sql = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
+        $mensaje ="";
+        $consulta = mysqli_query($conexion, $sql);
+        $sql2 = "delete from pokemon where codigo = $codigoPokemon";
+        $consulta2 = mysqli_query($conexion, $sql2);
+        echo $sql;
+        var_dump($consulta2);
+        if($consulta2){
+            $mensaje = "Pokemon ".$codigoPokemon." eliminado correctamente";
+        } else {
+            $mensaje = false;
+        }
+        return $mensaje;
     }
 }
 ?>
