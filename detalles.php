@@ -33,10 +33,10 @@ include ("includes/buscarPokemon.php");
         if ($pokemonEncontrado) {
             $nombrePokemon = $pokemonEncontrado['nombre'];
             $numeroPokedex = $pokemonEncontrado['numeroPokedex'];
-            $imagenPokemon = "./img/pokemon/" . $nombrePokemon . ".png";
+            $imagenPokemon = "./img/pokemon/" . $numeroPokemon . ".png";
 
             echo "<div class='col-md-4 bg-light rounded'>
-                            <img src='$imagenPokemon' alt='$nombrePokemon' class='img-fluid'>
+                            <img src='$imagenPokemon' alt='$numeroPokemon' class='img-fluid'>
                         </div>
                         <div class='col-md-8'>
                             <h2>";

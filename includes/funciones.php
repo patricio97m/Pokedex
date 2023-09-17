@@ -5,7 +5,7 @@ class pokedex
         $output = $data;
         if (is_array($output))
             $output = implode(',', $output);
-    
+
         echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
     }
     public function cargarPokemones() {
@@ -78,37 +78,37 @@ class pokedex
         return $listaDePokemones;
     }
 
-    public function listarPokemones($admin, $listaDePokemones){
+    public function listarPokemones($admin, $listaDePokemones) {
         foreach ($listaDePokemones as $pokemon) {
             $nombrePokemon = $pokemon["nombre"];
-            $numeroPokemon = $pokemon["numero"];
+            $codigoPokemon = $pokemon["numero"];
             $numeroPokedex = $pokemon["numeroPokedex"];
-            $imagenPokemon = "./img/pokemon/" . $nombrePokemon . ".png";
+            $imagenPokemon = "./img/pokemon/" . $codigoPokemon . ".png"; //
 
             echo "<tr>
-                    <th scope='row'>
-                    <a href='detalles.php?numero_pokemon=$numeroPokemon'>
-                        <img src=$imagenPokemon alt='poke1' class='imgpoke'>
-                    </a>
-                    </th>
-                    <td>";
+                <th scope='row'>
+                <a href='detalles.php?numero_pokemon=$codigoPokemon'> 
+                    <img src=$imagenPokemon alt='pokeImagen' class='imgpoke'>
+                </a>
+                </th>
+                <td>";
 
-                    foreach ($pokemon["tipos"] as $tipo) {
-                        $imagenTipo = "./img/tipos/Tipo_" . $tipo . ".webp";
-                        echo "<img src=$imagenTipo alt='tipo' class='imgtipo'>";
-                    }
+            foreach ($pokemon["tipos"] as $tipo) {
+                $imagenTipo = "./img/tipos/Tipo_" . $tipo . ".webp";
+                echo "<img src=$imagenTipo alt='tipo' class='imgtipo'>";
+            }
 
             echo "</td>
-                    <td>#$numeroPokedex</td>
-                    <td>
-                        <a href='detalles.php?numero_pokemon=$numeroPokemon' class='text-decoration-none'>$nombrePokemon</a>
-                    </td>";
+                <td>#$numeroPokedex</td>
+                <td>
+                    <a href='detalles.php?numero_pokemon=$codigoPokemon' class='text-decoration-none'>$nombrePokemon</a>
+                </td>";
 
             if ($admin) {
                 echo "<td>
-                        <a href='modifica.php?numPokemon=$numeroPokemon' class='btn btn-outline-primary'>Modifica</a>
-                        <a href='baja.php?numPokemon=$numeroPokemon' class='btn btn-outline-danger'>Baja</a>
-                      </td>";
+                    <a href='modifica.php?numPokemon=$codigoPokemon' class='btn btn-outline-primary'>Modifica</a>
+                    <a href='baja.php?numPokemon=$codigoPokemon' class='btn btn-outline-danger'>Baja</a>
+                  </td>";
             }
             echo "</tr>";
         }
@@ -203,6 +203,45 @@ class pokedex
             $mensaje = false;
         }
         return $mensaje;
+    }
+
+    public function altaPokemon($nombre, $numero, $tipos, $descripcion) {
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+
+        $sql = "INSERT INTO pokemon (nombre, numeroPokedex, descripcion) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "sis", $nombre, $numero, $descripcion);
+
+        $mensaje = "";
+        $codigoPokemon = 0;
+
+        if (mysqli_stmt_execute($stmt)) {
+            $codigoPokemon = mysqli_insert_id($conexion);
+
+            if (!isset($tipos)) {
+                $mensaje = "Ha ocurrido un error al insertar los tipos";
+                $this->bajaPokemon($codigoPokemon);
+            } else {
+                foreach ($tipos as $tipo) {
+                    $sql2 = "INSERT INTO tipo_pokemon (codigoPokemon, codigoTipo) VALUES (?, ?)";
+                    $stmt2 = mysqli_prepare($conexion, $sql2);
+                    mysqli_stmt_bind_param($stmt2, "ii", $codigoPokemon, $tipo);
+
+                    if (!mysqli_stmt_execute($stmt2)) {
+                        $mensaje = "Ha ocurrido un error al insertar los tipos";
+                        $this->bajaPokemon($codigoPokemon);
+                        break;
+                    }
+                }
+            }
+        } else {
+            $mensaje = "Ha ocurrido un error al insertar el Pokémon";
+        }
+
+        mysqli_close($conexion);
+
+        // Devuelve el código del Pokémon insertado
+        return ["mensaje" => $mensaje, "codigoPokemon" => $codigoPokemon];
     }
 }
 ?>

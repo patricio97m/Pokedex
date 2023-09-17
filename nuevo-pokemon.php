@@ -19,8 +19,21 @@ include ("includes/buscarPokemon.php");
     <?php include("includes/header.php"); ?>
 
     <main class="container">
+        <?php
+            if(isset($_SESSION["errorAlta"])){
+                $resultado = $_SESSION["errorAlta"];
+                echo "<h2 class='alert alert-danger' role='alert'>$resultado</h2>";
+                unset($_SESSION["errorAlta"]);
+            }
+            elseif (isset($_SESSION["successAlta"])){
+                $resultado = $_SESSION["successAlta"];
+                echo "<h2 class='alert alert-success' role='alert'>$resultado</h2>";
+                unset($_SESSION["successAlta"]);
+            }
+        ?>
+        
         <h2>Subir un nuevo Pokémon</h2>
-        <form action="procesar_formulario.php" method="post" enctype="multipart/form-data">
+        <form action="alta.php" method="post" enctype="multipart/form-data">
             <div class="form-group mb-3">
                 <label for="numero">Número Identificador:</label>
                 <input type="number" class="form-control" id="numero" name="numero" required>
@@ -30,26 +43,22 @@ include ("includes/buscarPokemon.php");
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
             </div>
             <div class="form-group mb-3">
-                <label for="tipos">Tipos (mínimo 1, máximo 2):</label>
+                <label for="tipos">Tipos:</label>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tipoFuego" name="tipos[]" value="Fuego">
-                    <label class="form-check-label" for="tipoFuego">Fuego</label>
+                    <input type="checkbox" class="form-check-input" id="Fuego" name="tipos[]" value="1">
+                    <label class="form-check-label" for="Fuego">Fuego</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tipoAgua" name="tipos[]" value="Agua">
-                    <label class="form-check-label" for="tipoAgua">Agua</label>
+                    <input type="checkbox" class="form-check-input" id="Planta" name="tipos[]" value="2">
+                    <label class="form-check-label" for="Planta">Planta</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tipoPlanta" name="tipos[]" value="Planta">
-                    <label class="form-check-label" for="tipoPlanta">Planta</label>
+                    <input type="checkbox" class="form-check-input" id="Bicho" name="tipos[]" value="3">
+                    <label class="form-check-label" for="Vicho">Veneno</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tipoBicho" name="tipos[]" value="Bicho">
-                    <label class="form-check-label" for="tipoBicho">Bicho</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tipoVolador" name="tipos[]" value="Volador">
-                    <label class="form-check-label" for="tipoVolador">Volador</label>
+                    <input type="checkbox" class="form-check-input" id="Volador" name="tipos[]" value="4">
+                    <label class="form-check-label" for="Volador">Volador</label>
                 </div>
             </div>
             <div class="form-group mb-3">
