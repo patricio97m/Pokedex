@@ -9,10 +9,7 @@ if(isset($_POST["buscarSubmit"])){
     exit;
 }
 else{
-    if(!isset($_SESSION["listaDePokemones"])){
-        $_SESSION["listaDePokemones"] = $pokedex->cargarPokemones();
-    }
-
+    $_SESSION["listaDePokemones"] = $pokedex->cargarPokemones();
 }
 $admin = isset($_SESSION['usuario']);
 $listaDePokemones = $_SESSION["listaDePokemones"];

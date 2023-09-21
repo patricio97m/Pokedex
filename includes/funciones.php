@@ -178,70 +178,102 @@ class pokedex
         return $tiposPokemon;
     }
     public function modificaPokemon($codigoPokemon, $nombre,$numero,$descripcion,$tipos) {
-        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
-        $sql = "update pokemon set 
-                    nombre ='$nombre',
-                    numeroPokedex=$numero,
-                    descripcion='$descripcion'
-                    where codigo=$codigoPokemon";
-        $consulta = mysqli_query($conexion, $sql);
-
-        $borraTipo = false;
-        $resultadoInsertaTipo=false;
-        if(!empty($tipos)){
-            $sqlTipo = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
-            $borraTipo = mysqli_query($conexion, $sqlTipo);
-            foreach ($tipos as $tipo){
-                $sqlInsertTipo = "insert into tipo_pokemon value($codigoPokemon,$tipo)";
-                $resultadoInsertaTipo = mysqli_query($conexion, $sqlInsertTipo);
+        if($this->verificarPokemon($nombre, $numero)){
+            $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+            $sql = "update pokemon set 
+                        nombre ='$nombre',
+                        numeroPokedex=$numero,
+                        descripcion='$descripcion'
+                        where codigo=$codigoPokemon";
+            $consulta = mysqli_query($conexion, $sql);
+    
+            $borraTipo = false;
+            $resultadoInsertaTipo=false;
+            if(!empty($tipos)){
+                $sqlTipo = "delete from tipo_pokemon where codigoPokemon = $codigoPokemon";
+                $borraTipo = mysqli_query($conexion, $sqlTipo);
+                foreach ($tipos as $tipo){
+                    $sqlInsertTipo = "insert into tipo_pokemon value($codigoPokemon,$tipo)";
+                    $resultadoInsertaTipo = mysqli_query($conexion, $sqlInsertTipo);
+                }
             }
+    
+            if($consulta&&$resultadoInsertaTipo&&$borraTipo){
+                $mensaje = "Pokemon ".$codigoPokemon." modificado correctamente";
+            } else {
+                $mensaje = false;
+            } 
         }
-
-        if($consulta&&$resultadoInsertaTipo&&$borraTipo){
-            $mensaje = "Pokemon ".$codigoPokemon." modificado correctamente";
-        } else {
+        else {
             $mensaje = false;
         }
+        
         return $mensaje;
     }
 
     public function altaPokemon($nombre, $numero, $tipos, $descripcion) {
-        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+        if(!$this->verificarPokemon($nombre, $numero)){
+            $mensaje = "El nombre y/o el numero del pokemón ya se encuentra en uso";
+        }
+        else{
+            $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
 
-        $sql = "INSERT INTO pokemon (nombre, numeroPokedex, descripcion) VALUES (?, ?, ?)";
-        $stmt = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($stmt, "sis", $nombre, $numero, $descripcion);
-
-        $mensaje = "";
-        $codigoPokemon = 0;
-
-        if (mysqli_stmt_execute($stmt)) {
-            $codigoPokemon = mysqli_insert_id($conexion);
-
-            if (!isset($tipos)) {
-                $mensaje = "Ha ocurrido un error al insertar los tipos";
-                $this->bajaPokemon($codigoPokemon);
-            } else {
-                foreach ($tipos as $tipo) {
-                    $sql2 = "INSERT INTO tipo_pokemon (codigoPokemon, codigoTipo) VALUES (?, ?)";
-                    $stmt2 = mysqli_prepare($conexion, $sql2);
-                    mysqli_stmt_bind_param($stmt2, "ii", $codigoPokemon, $tipo);
-
-                    if (!mysqli_stmt_execute($stmt2)) {
-                        $mensaje = "Ha ocurrido un error al insertar los tipos";
-                        $this->bajaPokemon($codigoPokemon);
-                        break;
+            $sql = "INSERT INTO pokemon (nombre, numeroPokedex, descripcion) VALUES (?, ?, ?)";
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, "sis", $nombre, $numero, $descripcion);
+    
+            $mensaje = "";
+            if (mysqli_stmt_execute($stmt)) {
+                $codigoPokemon = mysqli_insert_id($conexion);
+    
+                if (!isset($tipos)) {
+                    $mensaje = "Ha ocurrido un error al insertar los tipos";
+                    $this->bajaPokemon($codigoPokemon);
+                } else {
+                    foreach ($tipos as $tipo) {
+                        $sql2 = "INSERT INTO tipo_pokemon (codigoPokemon, codigoTipo) VALUES (?, ?)";
+                        $stmt2 = mysqli_prepare($conexion, $sql2);
+                        mysqli_stmt_bind_param($stmt2, "ii", $codigoPokemon, $tipo);
+    
+                        if (!mysqli_stmt_execute($stmt2)) {
+                            $mensaje = "Ha ocurrido un error al insertar los tipos";
+                            $this->bajaPokemon($codigoPokemon);
+                            break;
+                        }
                     }
                 }
+            } else {
+                $mensaje = "Ha ocurrido un error al insertar el Pokémon";
             }
-        } else {
-            $mensaje = "Ha ocurrido un error al insertar el Pokémon";
-        }
 
-        mysqli_close($conexion);
+            mysqli_close($conexion);
+        }
 
         // Devuelve el código del Pokémon insertado
         return ["mensaje" => $mensaje, "codigoPokemon" => $codigoPokemon];
+    }
+
+    public function verificarPokemon($nombre, $numeroPokedex){
+        $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
+
+        $sql = "select 1
+                from pokemon
+                where nombre = ? or numeroPokedex = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "si", $nombre, $numeroPokedex);
+        if(mysqli_stmt_execute($stmt)){
+            $resultado = mysqli_stmt_get_result($stmt);
+            if(mysqli_num_rows($resultado) == 0){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+        
     }
 }
 ?>

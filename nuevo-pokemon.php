@@ -53,8 +53,8 @@ include ("includes/buscarPokemon.php");
                     <label class="form-check-label" for="Planta">Planta</label>
                 </div>
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="Bicho" name="tipos[]" value="3">
-                    <label class="form-check-label" for="Vicho">Veneno</label>
+                    <input type="checkbox" class="form-check-input" id="Veneno" name="tipos[]" value="3">
+                    <label class="form-check-label" for="Veneno">Veneno</label>
                 </div>
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="Volador" name="tipos[]" value="4">
