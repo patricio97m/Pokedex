@@ -178,7 +178,7 @@ class pokedex
         return $tiposPokemon;
     }
     public function modificaPokemon($codigoPokemon, $nombre,$numero,$descripcion,$tipos) {
-        if($this->verificarPokemon($nombre, $numero)){
+        if($this->verificarPokemon($nombre, $numero, $codigoPokemon)){
             $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
             $sql = "update pokemon set 
                         nombre ='$nombre',
@@ -212,7 +212,7 @@ class pokedex
     }
 
     public function altaPokemon($nombre, $numero, $tipos, $descripcion) {
-        if(!$this->verificarPokemon($nombre, $numero)){
+        if(!$this->verificarPokemon($nombre, $numero, null)){
             $mensaje = "El nombre y/o el numero del pokemón ya se encuentra en uso";
         }
         else{
@@ -253,14 +253,14 @@ class pokedex
         return ["mensaje" => $mensaje, "codigoPokemon" => $codigoPokemon];
     }
 
-    public function verificarPokemon($nombre, $numeroPokedex){
+    public function verificarPokemon($nombre, $numeroPokedex, $codigo){
         $conexion = mysqli_connect('localhost', 'root', '', 'pokedex');
 
         $sql = "select 1
                 from pokemon
-                where nombre = ? or numeroPokedex = ?";
+                where (nombre = ? or numeroPokedex = ?) and codigo != ?";
         $stmt = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($stmt, "si", $nombre, $numeroPokedex);
+        mysqli_stmt_bind_param($stmt, "sii", $nombre, $numeroPokedex, $codigo);
         if(mysqli_stmt_execute($stmt)){
             $resultado = mysqli_stmt_get_result($stmt);
             if(mysqli_num_rows($resultado) == 0){
