@@ -60,6 +60,26 @@ include ("includes/buscarPokemon.php");
                     <input type="checkbox" class="form-check-input" id="Volador" name="tipos[]" value="4">
                     <label class="form-check-label" for="Volador">Volador</label>
                 </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="Agua" name="tipos[]" value="5">
+                    <label class="form-check-label" for="Agua">Agua</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="Eléctrico" name="tipos[]" value="6">
+                    <label class="form-check-label" for="Eléctrico">Eléctrico</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="Fantasma" name="tipos[]" value="7">
+                    <label class="form-check-label" for="Fantasma">Fantasma</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="Dragón" name="tipos[]" value="8">
+                    <label class="form-check-label" for="Dragón">Dragón</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="Psiquico" name="tipos[]" value="9">
+                    <label class="form-check-label" for="Psiquico">Psiquico</label>
+                </div>
             </div>
             <div class="form-group mb-3">
                 <label for="imagen">Imagen:</label>

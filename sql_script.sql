@@ -38,13 +38,18 @@ values ("Bulbasaur", 1, "Bulbasaur es un Pokémon cuadrúpedo de color verde y m
        ("Venusaur", 3, "El capullo de su lomo se abre completamente, dejando ver una enorme flor rosada y unas hojas semejantes a las de palmera o las de la Rafflesia arnoldii, que se nutre de la luz solar por fotosíntesis, aunque también absorbe energía del propio Pokémon."),
        ("Charmander", 4, "Charmander es un pequeño lagarto bípedo. Sus características de fuego son resaltadas por su color de piel anaranjado y su cola con la punta envuelta en llamas. Charmander, como sus evoluciones Charmeleon y Charizard, tiene una pequeña llama en la punta de su cola."),
        ("Charmeleon", 5, "Charmeleon es un gran lagarto bípedo que posee como característica general una llama en la punta de su cola al igual que Charmander y Charizard. Esta refleja el estado físico y emocional del Pokémon y si la llama se extingue, también lo hace la vida del mismo."),
-       ("Charizard", 6, "La mayoría de los Charizard viven en el Valle Charirrífico. Es conocido que les gusta vivir en lugares altos y calientes, por lo que se encuentran en muchas ocasiones cerca de volcanes. Es muy presuntuoso, violento, agresivo y muy orgulloso. ");
+       ("Charizard", 6, "La mayoría de los Charizard viven en el Valle Charirrífico. Es conocido que les gusta vivir en lugares altos y calientes, por lo que se encuentran en muchas ocasiones cerca de volcanes. Es muy presuntuoso, violento, agresivo y muy orgulloso. "),
+       ("Squirtle", 7, "Cuando retrae su largo cuello en el caparazón, dispara agua a una presión increíble."),
+       ("Pikachu", 25, "Cuando se enfada, este Pokémon descarga la energía que almacena en el interior de las bolsas de las mejillas."),
+       ("Gengar", 94, "Para quitarle la vida a su presa, se desliza en su sombra y espera su oportunidad en silencio."),
+       ("Dragonite", 149, "Dragonite es un gran Pokémon dragón, con varias características marcadas. Puede volar, escupir tanto fuego como agua o hielo, utilizar la electricidad, que genera mediante sus antenas pero el cómo lo hacen, es desconocido, pero podría ser porque el material del que están hechas permite reunir una enorme carga estática, además de eso posee una inteligencia cercana a la humana."),
+       ("Mewtwo", 150, "Mewtwo es el resultado de las ambiciones de los seres humanos en la creación de una reproducción genéticamente realzada (o más bien mejorada) de Mew. Es uno de los primeros Pokémon creados por la ciencia.");
 
 insert into Tipo (nombre)
-values ("Fuego"), ("Planta"), ("Veneno"), ("Volador");
+values ("Fuego"), ("Planta"), ("Veneno"), ("Volador"), ("Agua"), ("Eléctrico"), ("Fantasma"), ("Dragón"), ("Psiquico");
 
 insert into Tipo_Pokemon
-values (1, 2), (1, 3), (2, 2), (2, 3), (3, 2), (3, 3), (4, 1), (5, 1), (6, 1), (6, 4);
+values (1, 2), (1, 3), (2, 2), (2, 3), (3, 2), (3, 3), (4, 1), (5, 1), (6, 1), (6, 4), (7, 5), (8, 6), (9, 7), (9, 3), (10, 8), (10, 4), (11, 9);
 
 insert into Usuario (usuario,password)
 values ("admin","21232f297a57a5a743894a0e4a801fc3");
