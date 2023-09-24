@@ -33,7 +33,7 @@ include ("includes/buscarPokemon.php");
             unset($_SESSION["success"]);
         }
 
-    if (isset($_SESSION["listaDePokemones"]) && !empty($_SESSION["listaDePokemones"])) {
+    if (isset($listaDePokemones) && !empty($listaDePokemones)) {
         ?>
         <table class="table table-light table-hover table-bordered mt-3">
             <thead>
